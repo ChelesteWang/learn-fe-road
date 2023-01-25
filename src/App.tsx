@@ -1,13 +1,18 @@
+import { useReducer } from "react";
 import "./App.css";
 import TechStackItem from "./components/techstack-Item";
-import { addDataIndex, dataSource, generateDataMap } from "./utils";
+import DataMapContext, { TechTreeReducer } from "./store";
+import { initializedDataSource, initializedDataMap } from "./utils";
 
 function App() {
+  const [state, dispatch] = useReducer(TechTreeReducer, initializedDataMap);
   return (
     <div className="App">
       <h1>前端学习之路</h1>
-      <TechStackItem dataSource={addDataIndex(dataSource, "")} />
-      {JSON.stringify(generateDataMap(addDataIndex(dataSource, "")))}
+      <DataMapContext.Provider value={{ state, dispatch }}>
+        <TechStackItem dataSource={initializedDataSource} />
+        {JSON.stringify(state)}
+      </DataMapContext.Provider>
     </div>
   );
 }

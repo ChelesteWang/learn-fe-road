@@ -10,3 +10,8 @@ export type TTechStackGroup = ITechStack[];
 export type TTechStackData = ITechStack | TTechStackGroup;
 
 export type TDataMap = { [key: string]: number };
+
+export interface IAction {
+  type: string;
+  payload: any;
+}

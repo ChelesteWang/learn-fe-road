@@ -1,7 +1,8 @@
-import { FC, useState } from "react";
+import { FC, useContext, useState } from "react";
 import { Rate, Typography } from "@arco-design/web-react";
 import styles from "./index.module.css";
 import { TDataMap, TTechStackData } from "../../types";
+import DataMapContext from "../../store";
 
 interface TechStackItemProps {
   dataSource: TTechStackData;
@@ -9,6 +10,8 @@ interface TechStackItemProps {
 
 const TechStackItem: FC<TechStackItemProps> = ({ dataSource }) => {
   const desc = ["不了解", "了解", "熟悉", "熟练", "精通"];
+  const { dispatch } = useContext(DataMapContext);
+
   if (Array.isArray(dataSource)) {
     return (
       <div>
@@ -18,7 +21,7 @@ const TechStackItem: FC<TechStackItemProps> = ({ dataSource }) => {
       </div>
     );
   } else {
-    const { name, description, children } = dataSource;
+    const { name, description, children, id } = dataSource;
     const [rate, setRate] = useState(0);
     if (children && Array.isArray(children)) {
       return (
@@ -38,7 +41,17 @@ const TechStackItem: FC<TechStackItemProps> = ({ dataSource }) => {
           <span>得分：{rate * 2}</span>
           <div>介绍：{description}</div>
           <div>
-            <Rate allowHalf value={rate} onChange={(value) => setRate(value)} />
+            <Rate
+              allowHalf
+              value={rate}
+              onChange={(value) => {
+                setRate(value);
+                dispatch({
+                  type: "SET_STATE",
+                  payload: { id, value: value * 2 },
+                });
+              }}
+            />
             <Typography.Text className={styles["dec-text"]}>
               {desc[rate - 1]}
             </Typography.Text>
