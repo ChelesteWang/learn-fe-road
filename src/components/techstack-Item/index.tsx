@@ -1,10 +1,10 @@
 import { FC, useState } from "react";
 import { Rate, Typography } from "@arco-design/web-react";
 import styles from "./index.module.css";
-import { ITechStack } from "../../types";
+import { TDataMap, TTechStackData } from "../../types";
 
 interface TechStackItemProps {
-  dataSource: ITechStack | Array<ITechStack>;
+  dataSource: TTechStackData;
 }
 
 const TechStackItem: FC<TechStackItemProps> = ({ dataSource }) => {
@@ -13,13 +13,13 @@ const TechStackItem: FC<TechStackItemProps> = ({ dataSource }) => {
     return (
       <div>
         {dataSource.map((item, index) => (
-          <TechStackItem key={index} dataSource={item} />
+          <TechStackItem key={item.id} dataSource={item} />
         ))}
       </div>
     );
   } else {
-    const { name, description, children, value } = dataSource;
-    const [rate, setRate] = useState(value);
+    const { name, description, children } = dataSource;
+    const [rate, setRate] = useState(0);
     if (children && Array.isArray(children)) {
       return (
         <div>
@@ -27,7 +27,7 @@ const TechStackItem: FC<TechStackItemProps> = ({ dataSource }) => {
           <span>得分：{rate}</span>
           <div>介绍：{description}</div>
           {children.map((item, index) => {
-            return <TechStackItem key={index} dataSource={item} />;
+            return <TechStackItem key={item.id} dataSource={item} />;
           })}
         </div>
       );
@@ -35,10 +35,10 @@ const TechStackItem: FC<TechStackItemProps> = ({ dataSource }) => {
       return (
         <div>
           <span>{name}</span>
-          <span>得分：{rate}</span>
+          <span>得分：{rate * 2}</span>
           <div>介绍：{description}</div>
           <div>
-            <Rate value={rate} onChange={(value) => setRate(value)} />
+            <Rate allowHalf value={rate} onChange={(value) => setRate(value)} />
             <Typography.Text className={styles["dec-text"]}>
               {desc[rate - 1]}
             </Typography.Text>

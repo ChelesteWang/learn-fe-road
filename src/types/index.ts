@@ -1,6 +1,12 @@
 export interface ITechStack {
   name: string;
   description: string;
-  value: number;
-  children?: ITechStack | ITechStack[];
+  children?: ITechStack | TTechStackGroup;
+  id?: string;
 }
+
+export type TTechStackGroup = ITechStack[];
+
+export type TTechStackData = ITechStack | TTechStackGroup;
+
+export type TDataMap = { [key: string]: number };
