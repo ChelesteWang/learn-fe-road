@@ -5,6 +5,7 @@ import DataMapContext, { TechTreeReducer } from "./store";
 import { initializedDataSource, initializedDataMap } from "./utils";
 
 function App() {
+  // @ts-ignore
   const [state, dispatch] = useReducer(TechTreeReducer, initializedDataMap);
   return (
     <div className="App">

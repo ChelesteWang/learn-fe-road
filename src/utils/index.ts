@@ -77,6 +77,7 @@ export const dataMap: TDataMap = {};
 export function generateDataMap(dataSource: TTechStackData) {
   if (Array.isArray(dataSource)) {
     dataSource.forEach((item: ITechStack) => {
+      // @ts-ignore
       if (item.id === 0 || item.id) {
         dataMap[item?.id] = 0;
         if (item.children) {
@@ -86,6 +87,7 @@ export function generateDataMap(dataSource: TTechStackData) {
     });
   } else {
     // 如何简化 0 和 非空
+    // @ts-ignore
     if (dataSource?.id === 0 || dataSource?.id) {
       dataMap[dataSource.id] = 0;
     }

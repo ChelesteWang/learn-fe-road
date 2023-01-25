@@ -10,6 +10,7 @@ interface TechStackItemProps {
 
 const TechStackItem: FC<TechStackItemProps> = ({ dataSource }) => {
   const desc = ["不了解", "了解", "熟悉", "熟练", "精通"];
+  // @ts-ignore
   const { dispatch } = useContext(DataMapContext);
 
   if (Array.isArray(dataSource)) {
