@@ -95,6 +95,26 @@ export function generateDataMap(dataSource: TTechStackData) {
   return dataMap;
 }
 
+export function sumSubTree(dataSource: TTechStackData, dataMap: TDataMap) {
+  let sum = 0;
+  if (Array.isArray(dataSource)) {
+    dataSource.forEach((item: ITechStack) => {
+      // @ts-ignore
+      if (item.id === 0 || item.id) {
+        sum += dataMap[item.id] ?? 0;
+        if (item.children) {
+          sumSubTree(item.children, dataMap);
+        }
+      }
+    });
+  } else {
+    if (dataSource.id) {
+      sum += dataMap[dataSource.id] ?? 0;
+    }
+  }
+  return sum;
+}
+
 export const initializedDataSource = addDataIndex(dataSource, "");
 
 export const initializedDataMap = generateDataMap(initializedDataSource);

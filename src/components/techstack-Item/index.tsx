@@ -3,6 +3,7 @@ import { Rate, Typography } from "@arco-design/web-react";
 import styles from "./index.module.css";
 import { TDataMap, TTechStackData } from "../../types";
 import DataMapContext from "../../store";
+import { sumSubTree } from "../../utils";
 
 interface TechStackItemProps {
   dataSource: TTechStackData;
@@ -11,7 +12,7 @@ interface TechStackItemProps {
 const TechStackItem: FC<TechStackItemProps> = ({ dataSource }) => {
   const desc = ["不了解", "了解", "熟悉", "熟练", "精通"];
   // @ts-ignore
-  const { dispatch } = useContext(DataMapContext);
+  const { state, dispatch } = useContext(DataMapContext);
 
   if (Array.isArray(dataSource)) {
     return (
@@ -28,7 +29,7 @@ const TechStackItem: FC<TechStackItemProps> = ({ dataSource }) => {
       return (
         <div>
           <h2>{name}</h2>
-          <span>得分：{rate}</span>
+          <span>得分：{sumSubTree(children, state)}</span>
           <div>介绍：{description}</div>
           {children.map((item, index) => {
             return <TechStackItem key={item.id} dataSource={item} />;
