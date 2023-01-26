@@ -13,25 +13,26 @@ const TechStackItem: FC<TechStackItemProps> = ({ dataSource }) => {
   const desc = ["不了解", "了解", "熟悉", "熟练", "精通"];
   // @ts-ignore
   const { state, dispatch } = useContext(DataMapContext);
+  const { dataSource: _dataSource, dataMap: _dataMap } = state;
+  const [rate, setRate] = useState(0);
 
   if (Array.isArray(dataSource)) {
     return (
       <div>
-        {dataSource.map((item, index) => (
+        {dataSource.map((item) => (
           <TechStackItem key={item.id} dataSource={item} />
         ))}
       </div>
     );
   } else {
-    const { name, description, children, id } = dataSource;
-    const [rate, setRate] = useState(0);
+    const { name, description, children, id, parentId } = dataSource;
     if (children && Array.isArray(children)) {
       return (
         <div>
           <h2>{name}</h2>
-          <span>得分：{sumSubTree(children, state)}</span>
+          <span>得分：{sumSubTree(children, _dataMap)}</span>
           <div>介绍：{description}</div>
-          {children.map((item, index) => {
+          {children.map((item) => {
             return <TechStackItem key={item.id} dataSource={item} />;
           })}
         </div>
@@ -40,7 +41,7 @@ const TechStackItem: FC<TechStackItemProps> = ({ dataSource }) => {
       return (
         <div>
           <span>{name}</span>
-          <span>得分：{rate * 2}</span>
+          <span>得分：{_dataMap[id]}</span>
           <div>介绍：{description}</div>
           <div>
             <Rate
@@ -52,6 +53,10 @@ const TechStackItem: FC<TechStackItemProps> = ({ dataSource }) => {
                   type: "SET_STATE",
                   payload: { id, value: value * 2 },
                 });
+                // dispatch({
+                //   type: "SUM_SUBTREE",
+                //   payload: { children, parentId },
+                // });
               }}
             />
             <Typography.Text className={styles["dec-text"]}>

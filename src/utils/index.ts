@@ -8,6 +8,16 @@ export const dataSource = [
       {
         name: "前端基础",
         description: "HTML CSS JavaScript",
+        children: [
+          {
+            name: "前端基础 3",
+            description: "HTML CSS JavaScript",
+          },
+          {
+            name: "前端进阶 3",
+            description: "React Vue",
+          },
+        ],
       },
       {
         name: "前端进阶",
@@ -43,6 +53,7 @@ export function addDataIndex(
         return {
           ...item,
           id: index,
+          parentId: "",
           children: item.children
             ? addDataIndex(item.children, `${index}`)
             : null,
@@ -55,6 +66,7 @@ export function addDataIndex(
         return {
           ...item,
           id,
+          parentId: parentIndex,
           children: item.children ? addDataIndex(item.children, `${id}`) : null,
         };
       });
@@ -63,6 +75,7 @@ export function addDataIndex(
     result = {
       ...dataSource,
       id: parentIndex === "" ? "0" : generateId(parentIndex, 0),
+      parentId: parentIndex,
     };
   }
   return result;
@@ -97,13 +110,14 @@ export function generateDataMap(dataSource: TTechStackData) {
 
 export function sumSubTree(dataSource: TTechStackData, dataMap: TDataMap) {
   let sum = 0;
+  console.log(dataSource);
   if (Array.isArray(dataSource)) {
     dataSource.forEach((item: ITechStack) => {
       // @ts-ignore
       if (item.id === 0 || item.id) {
         sum += dataMap[item.id] ?? 0;
         if (item.children) {
-          sumSubTree(item.children, dataMap);
+          sum += sumSubTree(item.children, dataMap);
         }
       }
     });
